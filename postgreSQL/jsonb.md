@@ -1,0 +1,42 @@
+# JSONB 
+The jsonb datatype is an advanced binary storage format with full processing, indexing and searching capabilities, and as such pre-processes the JSON data to an internal format, which does include a single value per key; and also isn't sensible to extra whitespace or indentation.
+
+## Property accessors:
+>- ->
+</br>
+
+>- ->>
+</br>
+
+## Methods:
+>- **JSONB_BUILD_OBJECT()**
+```sql
+_myObject = JSONB_BUILD_OBJECT('firstname', 'Martin', 'lastname', 'Leinweber');
+-- vytvoří jsonb objekt '{"firtsname": "Martin", "lastname": "Leinweber"}'
+```
+
+>- **JSONB_BUILD_ARRAY()**
+>- **JSONB_OBJECT_KEYS()**
+```json
+
+```
+
+>- **JSONB_SET()**
+</br>
+Metoda slouží pro update vnořených hodnot v JSONB poli nebo objektu. 
+```sql
+	-- ukázka dat ze sloupce data
+	-- '{ "adress": {"PSČ": "736 01", "city": "Ostrava"}, "contacts": {} }'
+	UPDATE schema.table
+	SET "data" = JSONB_SET(
+			"data",				-- sloupec
+			'{adress, city}',	-- cesta pro uložení nové hodnoty
+			'"Havířov"',		-- nová hodnota
+			true				-- vytvořit pokud položka neexistuje?
+	)
+```
+
+>- **JSONB_INSERT()**
+</br>
+```sql
+```
