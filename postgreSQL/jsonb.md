@@ -4,7 +4,10 @@ The jsonb datatype is an advanced binary storage format with full processing, in
 ## Property accessors:
 >- ->
 </br>
-
+vracího hodnotu z JSONB na základě předanéhé klíče nebo indexu
+```sql
+_hodnota = muj_objekt->'jeho_property';
+```
 >- ->>
 </br>
 
@@ -30,10 +33,10 @@ Metoda slouží pro update vnořených hodnot v JSONB poli nebo objektu.
 	-- '{ "adress": {"PSČ": "736 01", "city": "Ostrava"}, "contacts": {} }'
 	UPDATE schema.table
 	SET "data" = JSONB_SET(
-			"data",				-- sloupec
-			'{adress, city}',	-- cesta pro uložení nové hodnoty
-			'"Havířov"',		-- nová hodnota
-			true				-- vytvořit pokud položka neexistuje?
+			"data",
+			'{adress, city}',
+			'"Havířov"',
+			true
 	)
 ```
 
