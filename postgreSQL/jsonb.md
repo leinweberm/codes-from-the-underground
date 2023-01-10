@@ -23,7 +23,8 @@ _myObject = JSONB_BUILD_OBJECT('firstname', 'Martin', 'lastname', 'Leinweber');
 
 >- **JSONB_SET()**
 </br>
-Metoda slouží pro update vnořených hodnot v JSONB poli nebo objektu. 
+Metoda slouží pro update vnořených hodnot v JSONB poli nebo objektu.
+</br>
 ```sql
 	-- ukázka dat ze sloupce data
 	-- '{ "adress": {"PSČ": "736 01", "city": "Ostrava"}, "contacts": {} }'
