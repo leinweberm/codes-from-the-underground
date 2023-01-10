@@ -5,7 +5,7 @@ The jsonb datatype is an advanced binary storage format with full processing, in
 >- ->
 </br>
 vracího hodnotu z JSONB na základě předanéhé klíče nebo indexu
-```sql
+```
 _hodnota = muj_objekt->'jeho_property';
 ```
 >- ->>
