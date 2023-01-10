@@ -3,8 +3,7 @@ The jsonb datatype is an advanced binary storage format with full processing, in
 
 ## Property accessors:
 >- ->
-</br>
-vracího hodnotu z JSONB na základě předanéhé klíče nebo indexu
+vracího hodnotu z JSONB na základě předanéhé klíče nebo indexu</br>
 ```
 _hodnota = muj_objekt->'jeho_property';
 ```
