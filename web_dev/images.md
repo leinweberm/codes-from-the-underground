@@ -124,4 +124,46 @@ Můžeme také zohlednit pokud má uživatel zapnuté šetření dat a to použ�
 
 ### **`sizes`**
 
-Request pro načtení obrázků posílá prohlížeč okamžitě potom, co obdrží od web serveru markdown našeho webu. Tento request je tedy posílán už ve chvíli, kdy prohlížeč nemá žádné informace z našich stylesheetů nebo javascript souborů. V tu chvíli ma prohlížeš k dispozici pouze informace o velikosti viewportu uživatele,
+Request pro načtení obrázků posílá prohlížeč okamžitě potom, co obdrží od web serveru markdown našeho webu. Tento request je tedy posílán už ve chvíli, kdy prohlížeč nemá žádné informace z našich stylesheetů nebo javascript souborů. V tu chvíli ma prohlížeš k dispozici pouze informace o velikosti viewportu uživatele, pixel density, uživatelské nastavení, atd... <br />
+
+Musíme tedy tedy prohlížeči předat informace o tom, jaké obrázky na webu budou přímo v markupu. To jsou jediné informace, které totiž má prohlížeč k dispozici ve chvíli kd posílá request pro stažení obrázků.
+**`srcset`** a **`sizes`** jsou tedy informace, které obrží prohlížeč hned po parsnutí našeho markupu/HTML. Srcset je tedy informace o možnostech ze kterých si může prohlížeč vybrat. A sizes jsou informace o tom, jakou velikost bude obrázek mít vůči viewportu.
+
+**Příklad 1: základní použití**
+
+```html
+<img
+	sizes="80vw"
+	srcset="small.jpg 600w, medium.jpg 1200w, large.jpg 2000w"
+	src="fallback.jpg"
+	alt="..."
+/>
+```
+
+V příkladu nahoře říkáme prohlížeči, že tento obrázek bude mít šířku 80vw _(Tímto nedefinujeme velikost obrázku, pouze prohlížeči říkáme, že takovou velikost bude obrázek mít. Velikost jako takovou musíme mít ještě nedefinovanou v našich inline stylech nebo css stylesheetech)_. Dále dáváme prohlížeči na výběr ze tří variant obrázku v různých velikostech. A v případě, že by prohlížeč **nepodporoval srcset** attribut, máme ještě klasický **src** který bude soužit jako **fallback** pro tento případ.<br />
+
+**Příklad 2: zohlednění marginu/paddingu**
+
+```html
+<img
+	sizes="calc(100vw-2em)"
+	srcset="small.jpg 400w, medium.jpg 800w, large.jpg 1600w, x-large.jpg 2400w"
+	src="fallback.jpg"
+	alt="..."
+/>
+```
+
+V tomto příkladu vidíme, že **sizes** má hodnotu definovou pomocí výpočtu, protože obrázky budou povětšinou mít nastaven i nějaký padding nebo margin. Zde počítáme s velikosti obrázku 100vw - 2em margin.<br />
+
+**Příklad 3: zohlednění breakpointů**
+
+```html
+<img
+	sizes="(min-width: 1200px) calc(80vw - 2em), 100vw"
+	srcset="small.jpg 600w, medium.jpg 1200w, large.jpg 2000w"
+	src="fallback.jpg"
+	alt="..."
+/>
+```
+
+Stejně jako srcet i sizes přijímají více parametrů oddělených čárkou. Na ukázce vidíme variantu kdy obrázek má velikost **calc(80vw - 2em) na displejích větších než 1200px** a na **100vw v ostatních případech, čili menších než 1200px**.
