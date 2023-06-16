@@ -1,28 +1,53 @@
 # JavaScript: témata pro začátečníky
 
+- **[Úvod](#úvod)**
+
+- **[Základní koncepty JavaScriptu](#základní-koncepty-javascriptu)**
 >- [Scope](#a-scope)
 >- [Hoisting](#b-hoisting)
 >- [Closure](#c-closure)
 >- [Object Assign](#object-assign)
+
+- **[Operators](#javascript-operators)**
+>- [Operator cheatsheet](#javascript-operators)
 >- [Split Operator](#split-operator)
 >- [Nullish a Coalescing operator](#nullish-coalescing-operator)
 >- [Pipe, Pipeline](#pipe--pipeline-operator)
+
+- **[Funkce](#funkce)**
+>- [Function Epression](#function-expression-funkční-výraz)
+>- [Arrow function](#arrow-funkce)
+>- [Anonymní funkce](#anonymní-funkce)
+>- [IIFE: immidiately-invoked-functional-expression](#iife-immidiately-invoked-functional-expression)
+
+- **[Asynchronní programování](#asynchronní-programování)**
 >- [Promise](#a-promise)
 >- [Async](#b-asyncawait)
 >- [Callback](#c-callback)
+
+- **[Runtime Concept](#runtime-concept)**
 >- [EventLoop](#event-loop)
+>- [Stack](#stack)
+>- [Heap](#heap-halda)
+>- [Queue / Fronta](#queue-fronta)
+>- [Přidání zprávy](#přidání-zprávy)
+>- ["Never Blocking"](#never-blocking)
 
 <br/>
 
-# **SCOPE, HOISTING, CLOSURE**
+# Úvod
+
+# **Základní koncepty JavaScriptu**
+
 >- ### **a) SCOPE**
+
 - Od ES6 máme v JavaScriptu 3 scopy = Global Scope, Function Scope, Block Scope.
 - **Global Scope** -> proměnné deklarované jako var jsou přístupné v celém scriptu.
 - **Function Scope** -> proměnné deklarované uvnitř funkce jsou lokální a lze je použít pouze v dané funkci.
 - **Block Scope** -> proměnné deklarované jako const a let jsou přístupné pouze uvnitř bloku / {} ve kterém jsou deklarovány.
 
 **POZOR!** Pokud přířadíme hodnotu proměnné, která není deklarována (např. carName = “Volvo”;), tak je proměnná automaticky globální. Pokud chceme tomuto zabránit musíme použít Strict Mode. Strict mode vyvoláme tím, že na začítek scriptu/funkce/třídy napíšeme 'use strict';
-Strict Mode podporují všechny moderní prohlížeče a například při zákládání projektu v React.js pomocí template projekt automaticky běží ve strict modu.</br></br>
+Strict Mode podporují všechny moderní prohlížeče a například při zákládání projektu v React.js pomocí template projekt automaticky běží ve strict modu.</
 
 >- ### **b) HOISTING**
 
@@ -75,7 +100,8 @@ function exec() {
 exec();
 ```
 Na příkladu vidíme, že funkce exec() má díky použitému closure přístup k proměnné univtř funkce outerFunc(), kte které by za normálních okolností neměla mít přístup.
-</br></br>
+
+<br/>
 
 # OBJECT ASSIGN
 ```js
@@ -94,9 +120,15 @@ console.log(returnedTarget);
 - Vrací upravený/modifikovaný cilový objekt.</br>
 
 Pokud chceme definovat nebo modifikovat vlastnost přímo v daném objektu,pooužijme metodu Object.defineProperty() viz. [zdroj](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/assign)
-</br></br>
 
-# SPLIT OPERATOR
+<br/>
+
+# JavaScript Operators
+![operator cheatsheet part 1](../data/images/java_script_operators_cheatsheet_part1.png)
+![operator cheatsheet part 2](../data/images/java_script_operators_cheatsheet_part2.png)
+![operator cheatsheet part 3](../data/images/java_script_operators_cheatsheet_part3.png)
+
+### SPLIT OPERATOR
 ```js
 const str = 'The quick brown fox jumps over the lazy dog.';
 const words = str.split(' ');
@@ -128,8 +160,8 @@ o Pokud je separator nalezen na konci/začátku stringu, stále dojde k jeho roz
 <br>=> Pokud je limit 0, funkce vrátí prázdný array []
 
 [zdroj](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/split)
-<br></br>
-# NULLISH COALESCING OPERATOR
+
+### NULLISH COALESCING OPERATOR
 V java scriptu můžeme rozdělit hodnoty na **FALSEY** a **TRUTHY**<br>
 FALSEY VALUES: null, undefined, NaN, “”, 0, false
 ```js
@@ -146,9 +178,10 @@ let checkAge = personAge && "Valid age";
 // pokud je personAge truthy value tak checkAge = "Valid age"
 ```
 [zdroj](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Nullish_coalescing_operator)
-<br></br>
 
-# PIPE / PIPELINE OPERATOR
+<br/>
+
+### PIPE / PIPELINE OPERATOR
 - Piping se často používá ve funkčním programování
 - Jedná se o předání výstupu jedno funkce napřímo do funkce další
 - V tuto chvíli nemá JavaScript žádný pipe operátor (teprve se připravuje a je ve fázi testování nový pipe operátor |> )
@@ -187,8 +220,47 @@ console.log(slug);
 //OUTPUT: 10-weird-facts-about-dogs
 ```
 <br>
+# FUNKCE
 
-# Promise vs Async vs Callback
+### Function expression (Funkční výraz)
+Syntaxe:
+```js
+function addFive(number) {
+	const result = number + 5;
+	return result;
+};
+```
+
+### Arrow funkce
+Syntaxe:
+```js
+const addFive = (number) => {
+	const result = number + 5;
+	return result;
+};
+```
+
+### Anonymní funkce
+Syntaxe:
+```js
+(number) => {
+	const result = number + 5;
+	return result;
+};
+```
+
+### IIFE (immidiately invoked functional expression)
+Syntaxe:
+```js
+((number) => {
+	const result = number + 5;
+	console.log('result', result);
+})();
+```
+
+<br/>
+
+# Asynchronní programování
 >- ### a) Promise
 - Je objekt, který reprezentuje status/state procesu a hlídá jestli je proběhl či nikoliv. Promise používáme ve chvíli, kdy víme, že někdy v budoucnu dojde k určitému procesu. Promise má tři statusy a to Pending, Resolved,Rejected.
 - Každá Promise začíná ve statusu Pending, kdy hlídá jestli už process proběhl a čeká na výsledek. Následně po skončení processu nabyde statusu buď Resolved nebo Rejected v závislosti na tom, zda skončí process úspěšně či neúspěšně.
@@ -273,6 +345,28 @@ const result2 = addFive(5, (number) => {
 <br/>
 
 # Event Loop
-![EventLoop](../data/images/java_script_event_loop.png)
+![JavaScript EventLoop](../data/images/java_script_event_loop.png)
 - Protože má JavaScript defaultně využívá jen jedno vlákno, tak pro zvládání více operací “najednou” musí docházet k takzvanému context switchingu, kdy program v krátkých intervalech přepíná mezi jednotlivými procesy a v závislosti ne jejich prioritě vždy provede kus logiky.
 
+# Runtime Concept
+![JavaScript Runtime Concept](../data/images/java_script_runtime_concept.svg)
+- ### Stack
+1. Když se zavolá jakákoliv funkce (řekněme třeba funkceA), tak se nejdříve ve stacku vytvoří frame obsahující referenci argumentu a lokální proměnné funkceA.
+2. Když funkceA zavolá funkciB, tak se vytvoří nový frame nad tím předcházejícím, který bude obsahovat referenci pro argument funkceB
+3. Když funkceB doběhne a vrátí výsledek, tak se její frame ze stacku odebere a program přejde ke zpracovávání framu pod ním. Tedy frame funkceA.
+4. Ve chvíli kdy FunkceA vrátí výsledek, bude Stack prázdný.
+
+- ### Heap (halda)
+1. Všechny objekty v JavaScriptu jsou na haldě (heap). Haldou nazýváme velké množství převážně nestrukturalizované paměti.
+
+- ### Queue (fronta)
+1. JavaScriptovový runtime vytváří list zpráv, které čekají na zpracování. Každá zpráva má svoji zodpovědnou funkci, která zodpovídá za její zpracování.
+2. Během jednoho cyklu event loop vždy veme nejstarší zprávu, která čeká v řadě jako první a zavolá za ni zodpovědnou funkci, která zprávu zpracuje. Ve chvíli kdy event loop danou metodu volá, automaticky pro ni vzniká ve stacku nový frame.
+3. Event loop nepřejde k řešení další zprávy, dokud se předcházející nedokončí.
+
+- ### Přidání zprávy
+1. Ve webovém prohlížeči zpráva vznikne pokaždé, kdy dojde k nějaké události/eventu, která má k sobě napárovaný listener.
+2. Pokud k události není napárovaný listener, událost zanikne a nevznikne nám žádná zpráva. Listener je třeba onClick event handler u tlačítka. Takže když klikneme na tlačítko odeslat s onClick event handlerem, tak nám tlačítko vytvoří událost do queue nám přibyde nová zpráva čekající na zpracování.
+
+- ### "Never blocking"
+1. Díky event loop modelu dokáže JavaScript například čekat na data z databáze a mezitím zpracovávat jiné procesy jako input uživatele v r8mci jednoho vlákna. Toto nazýváme never blocking codem. Toto například C# nedokáže a musíme v něm využívat vkláken/thread.
