@@ -1,3 +1,19 @@
+# JavaScript: témata pro začátečníky
+
+>- [Scope](#a-scope)
+>- [Hoisting](#b-hoisting)
+>- [Closure](#c-closure)
+>- [Object Assign](#object-assign)
+>- [Split Operator](#split-operator)
+>- [Nullish a Coalescing operator](#nullish-coalescing-operator)
+>- [Pipe, Pipeline](#pipe--pipeline-operator)
+>- [Promise](#a-promise)
+>- [Async](#b-asyncawait)
+>- [Callback](#c-callback)
+>- [EventLoop](#event-loop)
+
+<br/>
+
 # **SCOPE, HOISTING, CLOSURE**
 >- ### **a) SCOPE**
 - Od ES6 máme v JavaScriptu 3 scopy = Global Scope, Function Scope, Block Scope.
@@ -37,7 +53,7 @@ let lastName = "Leinweber";
 PŘÍKLAD 1
 ```js
 //definice funkce outerFunc
-function outerFunc() { 
+function outerFunc() {
 	//definování proměnné outerVar
 	let outerVar = 'I am outside!';
 	//definice funkceinnerFunc()
@@ -50,9 +66,9 @@ function outerFunc() {
 }
 
 //definice funkce exec()
-function exec() { 
+function exec() {
 	//definice funkce myInnerFunc s hodnotou funkce outerFunc(), která jak víme vrací innerFunc()
-	const myInnerFunc = outerFunc(); 
+	const myInnerFunc = outerFunc();
 	//console.log('I am outside!');
 	myInnerFunc();
 }
@@ -171,4 +187,92 @@ console.log(slug);
 //OUTPUT: 10-weird-facts-about-dogs
 ```
 <br>
-#
+
+# Promise vs Async vs Callback
+>- ### a) Promise
+- Je objekt, který reprezentuje status/state procesu a hlídá jestli je proběhl či nikoliv. Promise používáme ve chvíli, kdy víme, že někdy v budoucnu dojde k určitému procesu. Promise má tři statusy a to Pending, Resolved,Rejected.
+- Každá Promise začíná ve statusu Pending, kdy hlídá jestli už process proběhl a čeká na výsledek. Následně po skončení processu nabyde statusu buď Resolved nebo Rejected v závislosti na tom, zda skončí process úspěšně či neúspěšně.
+
+**.then()**<br/>
+Použijeme ve chvíli, kdy chceme vykonat sekvenci kódu v případě, že promise skončí úspěchem tedy resolved
+
+**.catch()**<br/>
+Použijeme pokud chceme něco vykonat v návaznosti na neúspěch promise/rejected status
+
+**.finally()**<br/>
+Nám umožní provést operaci nezávisle na tom, jak dopadne promise. Tato metoda proběhne v obou případech (resolved, rejected). Nicméně stále platí, že musí promise dojít k výsledku. Pokud zůstane promise ve statusu pending, tak metoda .finally() se nevykoná.
+
+příklad:
+```js
+const promise = new Promise(function (resolve, reject) {
+	const string1 = "geeksforgeeks";
+	const string2 = "geeksforgeeks";
+	if (string1 === string2) {
+		resolve();
+	} else { reject(); }
+	});
+
+	promise
+		.then(() => { console.log("Promise resolved successfully"); })
+		.catch(() => { console.log("Promise is rejected"); });
+```
+<br/>
+
+Rekaputilace:
+| Plusy | Mínusy |
+|-------|--------|
+| Přehledný a snadný error handling | Menší přehlednost kódu v porovnání s async/await |
+
+<br/>
+
+>- ### b) Async/Await
+- Je v podstatě syntactic sugar pro práci s promise. V podstatě jsou to stále promise, ale jinak zapsány. Tento způsob přípomíná více synchronní zápis a je tedy snazší se v něm vyznat i při použití většího množství asynchroních fukcí
+- Nemá tři statusy jako promise, async vrací buď resolved nebo rejected promise.
+- Nemá vlastní error handling podobně jako Promise a je tedy **good practice** obalit volání asynchronní funkce try/catch blokem.
+
+Příklad:
+```js
+const myAsyncfunction = async () => {
+	try {
+		let message = await exampleAsyncFunction();
+		console.log(message);
+	} catch (error) {
+		console.error(error);
+	}
+};
+```
+
+<br/>
+
+>- ### c) Callback
+- Callback je funkce, kterou předáváme jiné funkci jako parameter a tato funkce ji následně těsně před koncem vykoná.
+- Nedoporučuje se na sebe navazovat velké množství callbacků, protože pak vzniká jev zvaný callback hell známé také jako Pyramid of Doom, tak označujeme jev, kdy se kód stává nepřehledným kvůli velkému množství vnořených if statementů/callback funkcí/atd...
+
+Příklad:
+```js
+const addExtraFive = (number) => {
+	return number + 5;
+};
+
+const addFive = (number, callback) => {
+	let newNumber = number + 5;
+	if (callback) number = callback(number);
+
+	return number;
+};
+
+// varianta s declarovanou funkcí
+const result1 = addFive(5, addExtraFive);
+
+// varianta s anonymní arrow funkcí
+const result2 = addFive(5, (number) => {
+	return number + 5;
+});
+```
+
+<br/>
+
+# Event Loop
+![EventLoop](../data/images/java_script_event_loop.png)
+- Protože má JavaScript defaultně využívá jen jedno vlákno, tak pro zvládání více operací “najednou” musí docházet k takzvanému context switchingu, kdy program v krátkých intervalech přepíná mezi jednotlivými procesy a v závislosti ne jejich prioritě vždy provede kus logiky.
+
